@@ -12,6 +12,13 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import wping.message.TokenMessage;
+import wping.security.Token;
+
 @ServerEndpoint("/websocket")
 public class WebSocket {
 
@@ -19,13 +26,27 @@ public class WebSocket {
 
 	@OnMessage
 	public void onMessage(Session session, String message, boolean last) {
-
+		try {
+			
+			TokenMessage tokenMessage = new ObjectMapper().readValue(message, TokenMessage.class);
+			
+			if (Token.verify(tokenMessage.tkn)) {
+				sessions.add(session);
+				System.out.println("opened websocket sessions: " + sessions.size());
+			}
+			
+		} catch (JsonParseException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	@OnOpen
 	public void open(Session session) {
-		sessions.add(session);
-		System.out.println("opened websocket sessions: " + sessions.size());
 	}
 
 	@OnClose

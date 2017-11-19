@@ -1,0 +1,32 @@
+body {
+	background-color: black;
+	color: gray;
+	margin: 0px;
+	padding: 0px;
+	font-family: monospace;
+}
+
+.green {
+	color: lime;
+}
+
+.yellow {
+	color: yellow;
+}
+
+.red {
+	color: red;
+}
+
+#login {
+	position: fixed;
+	left: 80%;
+}
+
+#pwd {
+	background-color: black;
+	color: gray;	
+	border: none;
+	border-bottom: 1px solid gray;
+	outline: none;
+}
